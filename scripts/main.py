@@ -18,12 +18,16 @@ custom_dimensions = get_custom_dimensions()
 # Extract SD versions dynamically from the custom dimensions
 sd_versions = list(custom_dimensions.keys())
 
+# Set a default SD version and provide the corresponding dimensions as choices
+default_sd_version = sd_versions[0]
+default_choices = custom_dimensions[default_sd_version]
+
 # Gradio interface
 interface = gr.Interface(
     fn=lambda sd_version, dimensions: f"Selected SD Version: {sd_version}, Dimensions: {dimensions}",  # Just returning the selected values for demonstration
     inputs=[
-        gr.inputs.Radio(sd_versions, label="Select SD Version"),
-        gr.inputs.Dropdown(choices=lambda choice: custom_dimensions[choice], label="Select Dimensions")
+        gr.components.Radio(sd_versions, label="Select SD Version"),
+        gr.components.Dropdown(choices=default_choices, label="Select Dimensions")
     ],
     outputs="text",
     live=True
