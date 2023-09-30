@@ -1,15 +1,12 @@
 import gradio as gr
 
 # Default dimensions pre-filled in the text box
-default_dimensions = "SD 1.0:512x512;SD 2.0:768x768;SDXL 1.0:1024x1024,1408x704,1728x576"
+default_dimensions = "SD 1.0:512x512;SD 2.0:768x768;SDXL 1.0:1024X1024,1408x704,1728x576"
 
 def get_custom_dimensions():
-    # Retrieve the custom dimensions from the config
-    dimensions_str = shared.opts.get("custom_dimensions", default_dimensions)
-    
     # Parse the input string to extract dimensions for each SD version
     dimensions_dict = {}
-    for segment in dimensions_str.split(";"):
+    for segment in default_dimensions.split(";"):
         version, dimensions = segment.split(":")
         dimensions_dict[version.strip()] = dimensions.split(",")
     
@@ -31,12 +28,6 @@ interface = gr.Interface(
     outputs="text",
     live=True
 )
-
-# Add a text box to the config for custom dimensions
-def on_ui_settings():
-    shared.opts.add_option("custom_dimensions", shared.OptionInfo(default_dimensions, "Specify dimensions for each SD version", section=("dimensions", "Dimensions")))
-
-script_callbacks.on_ui_settings(on_ui_settings)
 
 # Launch the Gradio interface
 interface.launch()
